@@ -30,21 +30,21 @@ export default function AddToCartButton({ product }: { product: Product }) {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center rounded-full border border-brand-green/20">
+    <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+      <div className="flex flex-shrink-0 items-center rounded-full border border-brand-green/20">
         <button
           type="button"
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="p-1.5 text-brand-green-dark hover:text-brand-gold"
+          className="p-1 text-brand-green-dark hover:text-brand-gold sm:p-1.5"
           aria-label="Restar cantidad"
         >
           <Minus size={14} />
         </button>
-        <span className="w-5 text-center text-sm font-semibold">{quantity}</span>
+        <span className="w-4 text-center text-sm font-semibold sm:w-5">{quantity}</span>
         <button
           type="button"
           onClick={() => setQuantity((q) => q + 1)}
-          className="p-1.5 text-brand-green-dark hover:text-brand-gold"
+          className="p-1 text-brand-green-dark hover:text-brand-gold sm:p-1.5"
           aria-label="Sumar cantidad"
         >
           <Plus size={14} />
@@ -54,17 +54,19 @@ export default function AddToCartButton({ product }: { product: Product }) {
       <button
         type="button"
         onClick={handleAdd}
-        className="relative flex flex-1 items-center justify-center gap-1.5 overflow-visible rounded-full bg-brand-green px-3 py-1.5 text-sm font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95 disabled:opacity-60"
+        className="relative flex min-w-0 flex-1 items-center justify-center gap-1.5 overflow-visible rounded-full bg-brand-green px-2 py-1.5 text-sm font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95 disabled:opacity-60 sm:px-3"
         disabled={!product.in_stock}
       >
-        <span key={burstKey} className={added ? "flex items-center gap-1.5 animate-pop" : "flex items-center gap-1.5"}>
+        <span key={burstKey} className={added ? "flex min-w-0 items-center gap-1.5 animate-pop" : "flex min-w-0 items-center gap-1.5"}>
           {added ? (
             <>
-              <Check size={16} /> Agregado
+              <Check size={16} className="hidden flex-shrink-0 sm:block" />
+              <span className="truncate">Agregado</span>
             </>
           ) : (
             <>
-              <ShoppingBasket size={16} /> Agregar
+              <ShoppingBasket size={16} className="hidden flex-shrink-0 sm:block" />
+              <span className="truncate">Agregar</span>
             </>
           )}
         </span>

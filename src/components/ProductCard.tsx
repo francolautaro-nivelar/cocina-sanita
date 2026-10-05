@@ -8,7 +8,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const outOfStock = !product.in_stock || product.price == null;
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-brand-green/10 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-green/10 bg-white shadow-sm transition-shadow hover:shadow-md">
       <div className="relative aspect-square w-full bg-brand-sage/15">
         {product.image_url ? (
           <Image
@@ -30,7 +30,7 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-3">
+      <div className="flex flex-1 flex-col gap-1.5 p-2 sm:gap-2 sm:p-3">
         <div>
           <h3 className="font-display font-bold leading-tight text-brand-green-dark">
             {product.name}
