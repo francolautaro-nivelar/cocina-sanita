@@ -1,6 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Category, CustomerSummary, Order, Product, ProductEventStats } from "@/lib/types";
+import type {
+  CartSession,
+  Category,
+  CustomerSummary,
+  Order,
+  Product,
+  ProductEventStats,
+} from "@/lib/types";
 import { toQueryRange, type DateRange } from "@/lib/date-range";
+
+// A partir de cuánto tiempo sin actividad consideramos un carrito
+// "abandonado" en vez de "en curso".
+const ABANDONED_AFTER_MINUTES = 60;
 
 export async function getAllCategories(): Promise<Category[]> {
   const supabase = await createClient();
@@ -162,4 +173,23 @@ export async function getProductEventStats(range: DateRange = {}): Promise<Produ
       };
     })
     .sort((a, b) => b.adds - a.adds || b.views - a.views);
+}
+
+export async function getAbandonedCarts(): Promise<CartSession[]> {
+  const supabase = await createClient();
+  const cutoff = new Date(Date.now() - ABANDONED_AFTER_MINUTES * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from("cart_sessions")
+    .select("*")
+    .eq("status", "open")
+    .lt("updated_at", cutoff)
+    .order("updated_at", { ascending: false });
+
+  if (error) {
+    console.error("getAbandonedCarts", error);
+    return [];
+  }
+
+  return (data ?? []).filter((c) => Array.isArray(c.items) && c.items.length > 0);
 }

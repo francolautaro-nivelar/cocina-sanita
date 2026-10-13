@@ -33,14 +33,18 @@ export default function PrivacidadPage() {
         <Section title="Carrito y navegación">
           <p>
             El carrito de compras se guarda en tu propio navegador (almacenamiento
-            local), no en nuestros servidores, hasta que confirmás el pedido.
+            local) y también en nuestra base de datos, identificado con un código
+            anónimo (no con tu nombre), a medida que lo armás — así, si empezás un
+            pedido y no llegás a confirmarlo, podemos contactarte para ofrecerte
+            una mano a cerrarlo, igual que haríamos si te vemos en el local. Si
+            llegaste a escribir tu nombre o celular en el formulario de checkout,
+            esos datos también quedan guardados aunque no confirmes el pedido.
           </p>
           <p>
-            Registramos, de forma anónima y sin asociarlos a ninguna persona, qué
-            productos se ven y se agregan al carrito, para entender qué le
-            interesa a la gente y mejorar el catálogo. Esto no incluye tu nombre,
-            IP ni ningún dato que te identifique, y podés rechazarlo desde el
-            aviso de cookies que aparece al entrar al sitio.
+            Además, registramos de forma anónima qué productos se ven y se
+            agregan al carrito, para entender qué le interesa a la gente y
+            mejorar el catálogo. Todo esto podés rechazarlo desde el aviso de
+            cookies que aparece al entrar al sitio.
           </p>
         </Section>
 

@@ -71,3 +71,19 @@ export type ProductEventStats = {
   views: number;
   adds: number;
 };
+
+export type CartSessionStatus = "open" | "ordered";
+
+export type CartSession = {
+  session_id: string;
+  items: OrderItem[];
+  total: number;
+  customer_name: string | null;
+  customer_phone: string | null;
+  delivery_method: DeliveryMethod | null;
+  address_ref: string | null;
+  status: CartSessionStatus;
+  order_id: string | null;
+  created_at: string;
+  updated_at: string;
+};

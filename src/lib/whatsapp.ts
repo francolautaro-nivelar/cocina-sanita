@@ -53,3 +53,35 @@ export function buildOrderConfirmationLink({
 
   return `${buildCustomerWhatsAppLink(phone)}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
+
+// Mensaje que Carla usa desde /admin/carritos-abandonados para ofrecerle una
+// mano a alguien que dejó productos cargados sin confirmar el pedido.
+export function buildCartRecoveryLink({
+  phone,
+  customerName,
+  items,
+  total,
+}: {
+  phone: string;
+  customerName?: string | null;
+  items: OrderItem[];
+  total: number;
+}) {
+  const lines = [
+    `¡Hola${customerName ? ` ${customerName}` : ""}! Soy Carla, de Cocina Sanita 🥑`,
+    `Vi que dejaste armado un pedido en la web y no llegaste a confirmarlo:`,
+    "",
+    ...items.map(
+      (item) =>
+        `• ${item.quantity}x ${item.name}${
+          item.unit_label ? ` (${item.unit_label})` : ""
+        } — ${formatPrice(item.price * item.quantity)}`
+    ),
+    "",
+    `Total: ${formatPrice(total)}`,
+    "",
+    `¿Te ayudo a cerrarlo? Cualquier duda, acá estoy.`,
+  ];
+
+  return `${buildCustomerWhatsAppLink(phone)}?text=${encodeURIComponent(lines.join("\n"))}`;
+}

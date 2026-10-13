@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { useCartStore, cartTotal, type CartItem } from "@/store/cart";
 import { formatPrice } from "@/lib/format";
 import type { DeliveryMethod } from "@/lib/types";
+import { getCartSessionId } from "@/lib/cartSession";
+import { syncCartSession } from "@/lib/cartSync";
 import { submitOrder } from "./actions";
 
 type ConfirmedOrder = {
@@ -27,6 +29,17 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmedOrder, setConfirmedOrder] = useState<ConfirmedOrder | null>(null);
+
+  useEffect(() => {
+    if (!customerName.trim() && !phone.trim()) return;
+    syncCartSession({
+      customerName,
+      customerPhone: phone,
+      deliveryMethod,
+      addressRef: deliveryMethod === "envio" ? addressRef : "",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerName, phone, deliveryMethod, addressRef]);
 
   if (confirmedOrder) {
     return (
@@ -101,6 +114,7 @@ export default function CheckoutPage() {
       notes,
       items: orderItems,
       total,
+      cartSessionId: getCartSessionId(),
     });
 
     setSubmitting(false);
