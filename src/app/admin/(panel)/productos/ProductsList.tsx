@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { Pencil, Star } from "lucide-react";
+import { Pencil, Search, Star, X } from "lucide-react";
+import clsx from "clsx";
 import type { Category, Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { deleteProduct, toggleProductField } from "./actions";
@@ -11,9 +12,37 @@ import DeleteProductButton from "./DeleteProductButton";
 type ProductRow = Product & { category: Pick<Category, "id" | "name"> | null };
 type Field = "in_stock" | "active" | "featured";
 
+function normalize(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+}
+
 export default function ProductsList({ products }: { products: ProductRow[] }) {
   const [items, setItems] = useState(products);
+  const [search, setSearch] = useState("");
+  const [categoryId, setCategoryId] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+
+  const categories = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const p of products) {
+      if (p.category) map.set(p.category.id, p.category.name);
+    }
+    return Array.from(map, ([id, name]) => ({ id, name })).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+  }, [products]);
+
+  const filtered = useMemo(() => {
+    const term = normalize(search.trim());
+    return items.filter((p) => {
+      if (categoryId && p.category?.id !== categoryId) return false;
+      if (term && !normalize(p.name).includes(term)) return false;
+      return true;
+    });
+  }, [items, search, categoryId]);
 
   function handleToggle(id: string, field: Field, nextValue: boolean) {
     // Optimista: refleja el cambio al toque y recién después confirma con el
@@ -38,9 +67,75 @@ export default function ProductsList({ products }: { products: ProductRow[] }) {
 
   return (
     <>
+      <div className="mb-4 space-y-3">
+        <div className="relative max-w-sm">
+          <Search
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-brand-green-dark/40"
+          />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar producto por nombre..."
+            className="input pl-9"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              aria-label="Limpiar búsqueda"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-green-dark/40 hover:text-brand-green-dark"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setCategoryId(null)}
+            className={clsx(
+              "rounded-full px-3 py-1 text-xs font-semibold transition-all active:scale-95",
+              categoryId === null
+                ? "bg-brand-green text-white"
+                : "bg-brand-cream/50 text-brand-green-dark hover:bg-brand-cream"
+            )}
+          >
+            Todas
+          </button>
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setCategoryId(c.id)}
+              className={clsx(
+                "rounded-full px-3 py-1 text-xs font-semibold transition-all active:scale-95",
+                categoryId === c.id
+                  ? "bg-brand-green text-white"
+                  : "bg-brand-cream/50 text-brand-green-dark hover:bg-brand-cream"
+              )}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+
+        <p className="text-xs text-brand-green-dark/50">
+          Mostrando {filtered.length} de {items.length} productos
+        </p>
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="rounded-xl bg-brand-cream/30 px-4 py-6 text-brand-green-dark/70">
+          No encontramos productos con ese filtro.
+        </p>
+      )}
+
       {/* Mobile: lista de tarjetas */}
       <div className="space-y-3 sm:hidden">
-        {items.map((product) => (
+        {filtered.map((product) => (
           <div key={product.id} className="rounded-2xl border border-brand-green/10 bg-white p-4">
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -127,7 +222,7 @@ export default function ProductsList({ products }: { products: ProductRow[] }) {
             </tr>
           </thead>
           <tbody>
-            {items.map((product) => (
+            {filtered.map((product) => (
               <tr key={product.id} className="border-b border-brand-green/5 last:border-0">
                 <td className="px-4 py-3 font-medium text-brand-green-dark">
                   {product.name}
