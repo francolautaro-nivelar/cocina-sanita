@@ -6,7 +6,7 @@ productos, gestionar pedidos, clientes y ver las finanzas básicas del negocio.
 
 Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (base de datos,
 auth del admin y storage de fotos) + Zustand (carrito, persistido en el navegador) +
-Nodemailer (aviso por mail cuando entra un pedido).
+Resend (aviso por mail cuando entra un pedido).
 
 ## Puesta en marcha
 
@@ -39,19 +39,28 @@ Nodemailer (aviso por mail cuando entra un pedido).
    Add user. Con ese email/contraseña vas a poder entrar a `/admin`. Cualquier usuario
    autenticado tiene acceso al panel (pensado para un solo admin).
 
-5. **Mail de aviso de pedido nuevo (opcional pero recomendado)** — se manda por Gmail
-   SMTP a la misma casilla `cocinasanita@gmail.com`:
-   1. Activá la verificación en 2 pasos en esa cuenta de Google (si no la tiene).
-   2. Generá una contraseña de aplicación en
-      [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-      (elegí "Correo" / nombre libre, ej "Cocina Sanita Web").
+5. **Mail de aviso de pedido nuevo (opcional pero recomendado)** — se manda con
+   [Resend](https://resend.com):
+   1. Creá una cuenta gratis en [resend.com](https://resend.com) (3.000 mails/mes gratis).
+   2. Dashboard > API Keys > Create API Key, y copiala.
    3. En `.env.local`, completá:
       ```
-      GMAIL_USER=cocinasanita@gmail.com
-      GMAIL_APP_PASSWORD=<la contraseña de aplicación, sin espacios>
+      RESEND_API_KEY=<tu api key>
+      ORDER_NOTIFICATION_EMAIL=cocinasanita@gmail.com
       ```
-   Si no se configura, el sitio sigue funcionando igual — el pedido se guarda en la
-   base, simplemente no llega el mail.
+      Con solo esto ya funciona, pero el remitente por defecto
+      (`onboarding@resend.dev`) solo le puede mandar mails a la casilla con la que te
+      registraste en Resend. Para que le lleguen los avisos a
+      `ORDER_NOTIFICATION_EMAIL` en producción hay que verificar el dominio propio:
+   4. (Recomendado) Dashboard de Resend > Domains > Add Domain > `cocinasanita.com`,
+      y cargá en GoDaddy los registros DNS (TXT/DKIM/MX) que te muestre Resend — mismo
+      lugar donde se cargó el dominio de Vercel. Una vez verificado, agregá en
+      `.env.local` / Vercel:
+      ```
+      EMAIL_FROM=Cocina Sanita <pedidos@cocinasanita.com>
+      ```
+   Si no se configura `RESEND_API_KEY`, el sitio sigue funcionando igual — el pedido se
+   guarda en la base, simplemente no llega el mail.
 
 6. **Levantar el sitio**
 

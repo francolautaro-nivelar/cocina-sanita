@@ -1,17 +1,14 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import type { DeliveryMethod, OrderItem } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 
-const GMAIL_USER = process.env.GMAIL_USER;
-const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
-
-function getTransport() {
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) return null;
-  return nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
-  });
-}
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const NOTIFICATION_TO = process.env.ORDER_NOTIFICATION_EMAIL ?? "cocinasanita@gmail.com";
+// "onboarding@resend.dev" funciona sin configurar nada, pero Resend solo deja
+// mandar con ese remitente a la casilla dueña de la cuenta. Para que le
+// lleguen los avisos a NOTIFICATION_TO hay que verificar cocinasanita.com en
+// Resend y setear EMAIL_FROM (ver README).
+const EMAIL_FROM = process.env.EMAIL_FROM ?? "Cocina Sanita <onboarding@resend.dev>";
 
 export async function sendNewOrderEmail(order: {
   customerName: string;
@@ -22,10 +19,9 @@ export async function sendNewOrderEmail(order: {
   items: OrderItem[];
   total: number;
 }) {
-  const transport = getTransport();
-  if (!transport) {
+  if (!RESEND_API_KEY) {
     console.warn(
-      "Email no configurado (faltan GMAIL_USER / GMAIL_APP_PASSWORD en .env.local) — se omite el aviso por mail."
+      "Email no configurado (falta RESEND_API_KEY en .env.local) — se omite el aviso por mail."
     );
     return;
   }
@@ -62,12 +58,14 @@ export async function sendNewOrderEmail(order: {
   `;
 
   try {
-    await transport.sendMail({
-      from: `Cocina Sanita Web <${GMAIL_USER}>`,
-      to: GMAIL_USER,
+    const resend = new Resend(RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: EMAIL_FROM,
+      to: NOTIFICATION_TO,
       subject: `Nuevo pedido de ${order.customerName} — ${formatPrice(order.total)}`,
       html,
     });
+    if (error) console.error("sendNewOrderEmail", error);
   } catch (err) {
     console.error("sendNewOrderEmail", err);
   }
