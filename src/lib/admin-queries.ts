@@ -23,7 +23,8 @@ export async function getAllProducts(): Promise<
   const { data, error } = await supabase
     .from("products")
     .select("*, category:categories(id, name)")
-    .order("sort_order", { ascending: true });
+    .order("sort_order", { ascending: true })
+    .order("name", { ascending: true });
 
   if (error) {
     console.error("getAllProducts", error);
