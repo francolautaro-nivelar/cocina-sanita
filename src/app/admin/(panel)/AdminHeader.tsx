@@ -14,6 +14,7 @@ const NAV = [
   { href: "/admin/pedidos", label: "Pedidos" },
   { href: "/admin/clientes", label: "Clientes" },
   { href: "/admin/finanzas", label: "Finanzas" },
+  { href: "/admin/analiticas", label: "Analíticas" },
 ];
 
 export default function AdminHeader({ pendingCount }: { pendingCount: number }) {

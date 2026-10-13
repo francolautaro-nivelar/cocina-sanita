@@ -62,3 +62,12 @@ export type CustomerSummary = {
   firstOrderAt: string;
   lastOrderAt: string;
 };
+
+// No es una tabla propia: se arma agrupando `product_events` por producto.
+export type ProductEventStats = {
+  productId: string;
+  name: string;
+  categoryName: string | null;
+  views: number;
+  adds: number;
+};

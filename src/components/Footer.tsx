@@ -59,8 +59,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-4 text-xs text-brand-cream/60">
-          © {new Date().getFullYear()} Cocina Sanita. Todos los derechos reservados.
+        <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-4 text-xs text-brand-cream/60 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} Cocina Sanita. Todos los derechos reservados.</span>
+          <div className="flex gap-4">
+            <Link href="/privacidad" className="hover:text-brand-gold-light">
+              Política de privacidad
+            </Link>
+            <Link href="/terminos" className="hover:text-brand-gold-light">
+              Términos y condiciones
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

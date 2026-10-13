@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Category, CustomerSummary, Order, Product } from "@/lib/types";
+import type { Category, CustomerSummary, Order, Product, ProductEventStats } from "@/lib/types";
 import { toQueryRange, type DateRange } from "@/lib/date-range";
 
 export async function getAllCategories(): Promise<Category[]> {
@@ -110,4 +110,56 @@ export async function getCustomers(): Promise<CustomerSummary[]> {
   return Array.from(byPhone.values()).sort((a, b) =>
     b.lastOrderAt.localeCompare(a.lastOrderAt)
   );
+}
+
+export async function getProductEventStats(range: DateRange = {}): Promise<ProductEventStats[]> {
+  const supabase = await createClient();
+  const { from, to } = toQueryRange(range);
+
+  let query = supabase.from("product_events").select("product_id, event_type, created_at");
+  if (from) query = query.gte("created_at", from);
+  if (to) query = query.lte("created_at", to);
+
+  const { data: events, error } = await query;
+  if (error) {
+    console.error("getProductEventStats", error);
+    return [];
+  }
+
+  const { data: products, error: prodError } = await supabase
+    .from("products")
+    .select("id, name, category:categories(name)");
+  if (prodError) {
+    console.error("getProductEventStats/products", prodError);
+  }
+
+  const productMap = new Map(
+    (products ?? []).map((p) => [
+      p.id as string,
+      {
+        name: p.name as string,
+        categoryName: (p.category as unknown as { name: string } | null)?.name ?? null,
+      },
+    ])
+  );
+
+  const stats = new Map<string, { views: number; adds: number }>();
+  for (const event of events ?? []) {
+    const entry = stats.get(event.product_id) ?? { views: 0, adds: 0 };
+    if (event.event_type === "view") entry.views += 1;
+    else if (event.event_type === "add_to_cart") entry.adds += 1;
+    stats.set(event.product_id, entry);
+  }
+
+  return Array.from(stats.entries())
+    .map(([productId, counts]) => {
+      const product = productMap.get(productId);
+      return {
+        productId,
+        name: product?.name ?? "Producto eliminado",
+        categoryName: product?.categoryName ?? null,
+        ...counts,
+      };
+    })
+    .sort((a, b) => b.adds - a.adds || b.views - a.views);
 }

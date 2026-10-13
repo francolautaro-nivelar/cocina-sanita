@@ -6,6 +6,7 @@ import { Leaf } from "lucide-react";
 import type { ProductGroup } from "@/lib/variants";
 import { formatPrice } from "@/lib/format";
 import AddToCartButton from "@/components/AddToCartButton";
+import { useTrackView } from "@/lib/useTrackView";
 
 function shortUnit(unitLabel: string | null) {
   if (!unitLabel) return "";
@@ -17,9 +18,13 @@ export default function ProductCard({ group }: { group: ProductGroup }) {
   const hasVariants = group.variants.length > 1;
   const product = group.variants[selectedIndex] ?? group.variants[0];
   const outOfStock = !product.in_stock || product.price == null;
+  const viewRef = useTrackView(group.variants[0].id);
 
   return (
-    <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-green/10 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <div
+      ref={viewRef}
+      className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-green/10 bg-white shadow-sm transition-shadow hover:shadow-md"
+    >
       <div className="relative aspect-square w-full bg-brand-sage/15">
         {group.image_url ? (
           <Image

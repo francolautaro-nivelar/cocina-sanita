@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Minus, Plus, ShoppingBasket, Check } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import type { Product } from "@/lib/types";
+import { trackProductEvent } from "@/lib/analytics";
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
@@ -22,6 +23,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
 
   function handleAdd() {
     addItem(product, quantity);
+    trackProductEvent(product.id, "add_to_cart");
     setAdded(true);
     setLastAddedQty(quantity);
     setBurstKey((k) => k + 1);
