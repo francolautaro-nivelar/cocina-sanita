@@ -54,6 +54,7 @@ export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
     .select("*")
     .eq("active", true)
     .eq("in_stock", true)
+    .eq("featured", true)
     .order("sort_order", { ascending: true })
     .limit(limit);
 

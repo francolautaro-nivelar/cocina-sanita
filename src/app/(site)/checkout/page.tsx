@@ -56,7 +56,7 @@ export default function CheckoutPage() {
         </div>
         <Link
           href="/productos"
-          className="mt-6 inline-block rounded-full bg-brand-green px-6 py-3 font-semibold text-white hover:bg-brand-green-dark"
+          className="mt-6 inline-block rounded-full bg-brand-green px-6 py-3 font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95"
         >
           Seguir comprando
         </Link>
@@ -214,7 +214,7 @@ export default function CheckoutPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-full bg-brand-green px-6 py-3 font-semibold text-white hover:bg-brand-green-dark disabled:opacity-60"
+          className="w-full rounded-full bg-brand-green px-6 py-3 font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95 disabled:opacity-60"
         >
           {submitting ? "Enviando..." : "Confirmar pedido"}
         </button>

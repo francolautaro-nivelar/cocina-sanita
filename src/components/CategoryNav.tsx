@@ -14,7 +14,7 @@ export default function CategoryNav({
       <Link
         href="/productos"
         className={clsx(
-          "rounded-full px-4 py-1.5 text-sm font-semibold transition-colors",
+          "rounded-full px-4 py-1.5 text-sm font-semibold transition-all active:scale-95",
           !activeSlug
             ? "bg-brand-green text-white"
             : "bg-brand-cream/50 text-brand-green-dark hover:bg-brand-cream"
@@ -27,7 +27,7 @@ export default function CategoryNav({
           key={category.id}
           href={`/productos?categoria=${category.slug}`}
           className={clsx(
-            "rounded-full px-4 py-1.5 text-sm font-semibold transition-colors",
+            "rounded-full px-4 py-1.5 text-sm font-semibold transition-all active:scale-95",
             activeSlug === category.slug
               ? "bg-brand-green text-white"
               : "bg-brand-cream/50 text-brand-green-dark hover:bg-brand-cream"

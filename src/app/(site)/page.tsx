@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Leaf, Wheat, ShieldCheck } from "lucide-react";
 import { getActiveCategories, getFeaturedProducts } from "@/lib/queries";
+import { groupProductVariants } from "@/lib/variants";
 import ProductCard from "@/components/ProductCard";
 
 export default async function Home() {
@@ -26,7 +27,7 @@ export default async function Home() {
             <div className="mt-6 flex justify-center gap-3 md:justify-start">
               <Link
                 href="/productos"
-                className="rounded-full bg-brand-gold px-6 py-3 font-semibold text-brand-green-dark transition-colors hover:bg-brand-gold-light"
+                className="rounded-full bg-brand-gold px-6 py-3 font-semibold text-brand-green-dark transition-all hover:bg-brand-gold-light active:scale-95"
               >
                 Ver la tienda
               </Link>
@@ -65,7 +66,7 @@ export default async function Home() {
               <Link
                 key={category.id}
                 href={`/productos?categoria=${category.slug}`}
-                className="rounded-full bg-brand-sage/20 px-5 py-2 font-semibold text-brand-green-dark transition-colors hover:bg-brand-sage/40"
+                className="rounded-full bg-brand-sage/20 px-5 py-2 font-semibold text-brand-green-dark transition-all hover:bg-brand-sage/40 active:scale-95"
               >
                 {category.name}
               </Link>
@@ -81,13 +82,16 @@ export default async function Home() {
             <h2 className="font-display text-2xl font-bold text-brand-green-dark">
               Productos destacados
             </h2>
-            <Link href="/productos" className="font-semibold text-brand-olive hover:underline">
+            <Link
+              href="/productos"
+              className="inline-block font-semibold text-brand-olive transition-transform hover:underline active:scale-95"
+            >
               Ver todos
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {groupProductVariants(featured).map((group) => (
+              <ProductCard key={group.key} group={group} />
             ))}
           </div>
         </section>

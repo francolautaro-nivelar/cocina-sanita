@@ -43,11 +43,12 @@ function readProductFields(formData: FormData) {
   const description = String(formData.get("description") || "").trim() || null;
   const inStock = formData.get("in_stock") === "on";
   const active = formData.get("active") === "on";
+  const featured = formData.get("featured") === "on";
   const sortOrder = Number(formData.get("sort_order") || 0);
   const slugInput = String(formData.get("slug") || "").trim();
   const slug = slugify(slugInput || name);
 
-  return { name, categoryId, price, unitLabel, description, inStock, active, sortOrder, slug };
+  return { name, categoryId, price, unitLabel, description, inStock, active, featured, sortOrder, slug };
 }
 
 export async function createProduct(formData: FormData) {
@@ -65,6 +66,7 @@ export async function createProduct(formData: FormData) {
     image_url: imageUrl,
     in_stock: fields.inStock,
     active: fields.active,
+    featured: fields.featured,
     sort_order: fields.sortOrder,
   });
 
@@ -90,6 +92,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     unit_label: fields.unitLabel,
     in_stock: fields.inStock,
     active: fields.active,
+    featured: fields.featured,
     sort_order: fields.sortOrder,
   };
   if (newImageUrl) update.image_url = newImageUrl;
@@ -117,7 +120,7 @@ export async function deleteProduct(productId: string) {
 
 export async function toggleProductField(
   productId: string,
-  field: "in_stock" | "active",
+  field: "in_stock" | "active" | "featured",
   value: boolean
 ) {
   const supabase = await createClient();

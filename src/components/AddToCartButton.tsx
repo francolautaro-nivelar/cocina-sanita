@@ -35,7 +35,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         <button
           type="button"
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="p-1 text-brand-green-dark hover:text-brand-gold sm:p-1.5"
+          className="p-1 text-brand-green-dark transition-transform hover:text-brand-gold active:scale-75 sm:p-1.5"
           aria-label="Restar cantidad"
         >
           <Minus size={14} />
@@ -44,7 +44,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         <button
           type="button"
           onClick={() => setQuantity((q) => q + 1)}
-          className="p-1 text-brand-green-dark hover:text-brand-gold sm:p-1.5"
+          className="p-1 text-brand-green-dark transition-transform hover:text-brand-gold active:scale-75 sm:p-1.5"
           aria-label="Sumar cantidad"
         >
           <Plus size={14} />

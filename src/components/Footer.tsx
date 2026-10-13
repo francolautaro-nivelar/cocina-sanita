@@ -33,7 +33,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="rounded-full bg-white/10 p-2 transition-colors hover:bg-brand-gold hover:text-brand-green-dark"
+                className="rounded-full bg-white/10 p-2 transition-all hover:bg-brand-gold hover:text-brand-green-dark active:scale-90"
               >
                 <MessageCircle size={20} />
               </a>
@@ -42,7 +42,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="rounded-full bg-white/10 p-2 transition-colors hover:bg-brand-gold hover:text-brand-green-dark"
+                className="rounded-full bg-white/10 p-2 transition-all hover:bg-brand-gold hover:text-brand-green-dark active:scale-90"
               >
                 <InstagramIcon size={20} />
               </a>
@@ -51,7 +51,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="rounded-full bg-white/10 p-2 transition-colors hover:bg-brand-gold hover:text-brand-green-dark"
+                className="rounded-full bg-white/10 p-2 transition-all hover:bg-brand-gold hover:text-brand-green-dark active:scale-90"
               >
                 <FacebookIcon size={20} />
               </a>

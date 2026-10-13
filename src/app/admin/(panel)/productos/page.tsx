@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil } from "lucide-react";
+import { Plus, Pencil, Star } from "lucide-react";
 import { getAllProducts } from "@/lib/admin-queries";
 import { formatPrice } from "@/lib/format";
 import { deleteProduct, toggleProductField } from "./actions";
@@ -74,6 +74,19 @@ export default async function AdminProductosPage() {
                       {product.active ? "Visible" : "Oculto"}
                     </button>
                   </form>
+                  <form action={toggleProductField.bind(null, product.id, "featured", !product.featured)}>
+                    <button
+                      type="submit"
+                      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold transition-transform active:scale-90 ${
+                        product.featured
+                          ? "bg-brand-gold text-brand-green-dark"
+                          : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      <Star size={12} fill={product.featured ? "currentColor" : "none"} />
+                      Destacado
+                    </button>
+                  </form>
 
                   <div className="ml-auto flex items-center gap-1">
                     <Link
@@ -104,6 +117,7 @@ export default async function AdminProductosPage() {
                   <th className="px-4 py-3 font-semibold">Precio</th>
                   <th className="px-4 py-3 font-semibold">Stock</th>
                   <th className="px-4 py-3 font-semibold">Visible</th>
+                  <th className="px-4 py-3 font-semibold">Destacado</th>
                   <th className="px-4 py-3 font-semibold text-right">Acciones</th>
                 </tr>
               </thead>
@@ -149,6 +163,21 @@ export default async function AdminProductosPage() {
                           }`}
                         >
                           {product.active ? "Visible" : "Oculto"}
+                        </button>
+                      </form>
+                    </td>
+                    <td className="px-4 py-3">
+                      <form action={toggleProductField.bind(null, product.id, "featured", !product.featured)}>
+                        <button
+                          type="submit"
+                          className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold transition-transform active:scale-90 ${
+                            product.featured
+                              ? "bg-brand-gold text-brand-green-dark"
+                              : "bg-gray-100 text-gray-500"
+                          }`}
+                        >
+                          <Star size={12} fill={product.featured ? "currentColor" : "none"} />
+                          {product.featured ? "Sí" : "No"}
                         </button>
                       </form>
                     </td>

@@ -48,7 +48,7 @@ export default function Header() {
           <CartBadge />
           <button
             type="button"
-            className="rounded-md p-2 text-brand-green-dark md:hidden"
+            className="rounded-md p-2 text-brand-green-dark transition-transform active:scale-90 md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Abrir menú"
           >

@@ -24,7 +24,7 @@ export default function CartBadge() {
   return (
     <Link
       href="/carrito"
-      className="relative rounded-md p-2 text-brand-green-dark transition-colors hover:text-brand-gold"
+      className="relative rounded-md p-2 text-brand-green-dark transition-all hover:text-brand-gold active:scale-90"
       aria-label="Ver carrito"
     >
       <ShoppingBasket size={24} className={bump ? "animate-pop" : undefined} />

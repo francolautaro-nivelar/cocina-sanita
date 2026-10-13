@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getCategoriesWithProducts } from "@/lib/queries";
+import { groupProductVariants } from "@/lib/variants";
 import CategoryNav from "@/components/CategoryNav";
 import ProductCard from "@/components/ProductCard";
 
@@ -43,8 +44,8 @@ export default async function ProductosPage({
 
             {category.products.length > 0 ? (
               <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {category.products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {groupProductVariants(category.products).map((group) => (
+                  <ProductCard key={group.key} group={group} />
                 ))}
               </div>
             ) : (

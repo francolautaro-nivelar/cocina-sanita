@@ -115,6 +115,10 @@ export default function ProductForm({
           <input type="checkbox" name="active" defaultChecked={product?.active ?? true} />
           Visible en la tienda
         </label>
+        <label className="flex items-center gap-2 text-sm font-semibold text-brand-green-dark">
+          <input type="checkbox" name="featured" defaultChecked={product?.featured ?? false} />
+          Destacado en la home
+        </label>
       </div>
 
       <button

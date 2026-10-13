@@ -23,7 +23,7 @@ export default function CarritoPage() {
         </p>
         <Link
           href="/productos"
-          className="rounded-full bg-brand-green px-6 py-3 font-semibold text-white hover:bg-brand-green-dark"
+          className="rounded-full bg-brand-green px-6 py-3 font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95"
         >
           Ir a la tienda
         </Link>
@@ -52,7 +52,7 @@ export default function CarritoPage() {
               <button
                 type="button"
                 onClick={() => setQuantity(item.productId, item.quantity - 1)}
-                className="p-1.5 text-brand-green-dark hover:text-brand-gold"
+                className="p-1.5 text-brand-green-dark transition-transform hover:text-brand-gold active:scale-75"
                 aria-label="Restar cantidad"
               >
                 <Minus size={14} />
@@ -61,7 +61,7 @@ export default function CarritoPage() {
               <button
                 type="button"
                 onClick={() => setQuantity(item.productId, item.quantity + 1)}
-                className="p-1.5 text-brand-green-dark hover:text-brand-gold"
+                className="p-1.5 text-brand-green-dark transition-transform hover:text-brand-gold active:scale-75"
                 aria-label="Sumar cantidad"
               >
                 <Plus size={14} />
@@ -75,7 +75,7 @@ export default function CarritoPage() {
             <button
               type="button"
               onClick={() => removeItem(item.productId)}
-              className="p-2 text-brand-green-dark/50 hover:text-red-500"
+              className="p-2 text-brand-green-dark/50 transition-transform hover:text-red-500 active:scale-75"
               aria-label="Quitar producto"
             >
               <Trash2 size={18} />
@@ -94,13 +94,13 @@ export default function CarritoPage() {
       <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
         <Link
           href="/productos"
-          className="rounded-full border border-brand-green/30 px-6 py-3 text-center font-semibold text-brand-green-dark hover:bg-brand-cream/30"
+          className="rounded-full border border-brand-green/30 px-6 py-3 text-center font-semibold text-brand-green-dark transition-all hover:bg-brand-cream/30 active:scale-95"
         >
           Seguir comprando
         </Link>
         <Link
           href="/checkout"
-          className="rounded-full bg-brand-green px-6 py-3 text-center font-semibold text-white hover:bg-brand-green-dark"
+          className="rounded-full bg-brand-green px-6 py-3 text-center font-semibold text-white transition-all hover:bg-brand-green-dark active:scale-95"
         >
           Continuar con el pedido
         </Link>

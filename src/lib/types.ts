@@ -18,6 +18,7 @@ export type Product = {
   image_url: string | null;
   in_stock: boolean;
   active: boolean;
+  featured: boolean;
   sort_order: number;
   created_at: string;
   updated_at: string;
