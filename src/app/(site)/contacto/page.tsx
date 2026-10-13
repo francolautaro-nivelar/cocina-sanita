@@ -4,8 +4,9 @@ import { InstagramIcon, FacebookIcon } from "@/components/icons";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contacto | Cocina Sanita",
-  description: "Hablanos por WhatsApp, Instagram o Facebook.",
+  title: "Contacto",
+  description:
+    "Contactá a Cocina Sanita en La Plata por WhatsApp, Instagram o Facebook para coordinar tu pedido de frutas, verduras y pulpas congeladas.",
 };
 
 const CONTACTS = [
@@ -37,6 +38,7 @@ export default function ContactoPage() {
       </h1>
       <p className="mt-2 text-center text-brand-green-dark/70">
         ¿Tenés dudas sobre un pedido o querés coordinar algo especial? Escribinos.
+        Coordinamos retiro o envío en La Plata y alrededores.
       </p>
 
       <div className="mt-8 space-y-3">

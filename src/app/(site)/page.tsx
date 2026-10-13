@@ -21,8 +21,8 @@ export default async function Home() {
               Simplificá tu vida y comé sano
             </h1>
             <p className="mt-4 text-lg text-brand-cream/90">
-              Frutas, verduras y pulpas congeladas, listas para tus comidas. Libres de
-              gluten y aditivos.
+              Frutas, verduras y pulpas congeladas en La Plata, listas para tus comidas.
+              Libres de gluten y aditivos.
             </p>
             <div className="mt-6 flex justify-center gap-3 md:justify-start">
               <Link

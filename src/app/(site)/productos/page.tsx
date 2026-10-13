@@ -5,11 +5,14 @@ import CategoryNav from "@/components/CategoryNav";
 import ProductCard from "@/components/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Tienda | Cocina Sanita",
-  description: "Frutas, pulpas, verduras y mix congelados. Pedí online.",
+  title: "Tienda",
+  description:
+    "Catálogo completo de frutas, pulpas, verduras y mix congelados en La Plata. Elegí tus productos, armá el carrito y pedí online.",
 };
 
 export const revalidate = 60;
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cocinasanita.com";
 
 export default async function ProductosPage({
   searchParams,
@@ -22,8 +25,45 @@ export default async function ProductosPage({
     ? categories.filter((c) => c.slug === categoriaSlug)
     : categories;
 
+  let position = 0;
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Catálogo Cocina Sanita",
+    itemListElement: categories.flatMap((category) =>
+      category.products
+        .filter((p) => p.price != null)
+        .map((p) => {
+          position += 1;
+          return {
+            "@type": "ListItem",
+            position,
+            item: {
+              "@type": "Product",
+              name: p.name,
+              image: p.image_url ?? undefined,
+              url: `${SITE_URL}/productos?categoria=${category.slug}`,
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "ARS",
+                price: p.price,
+                availability: p.in_stock
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/OutOfStock",
+              },
+            },
+          };
+        })
+    ),
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       <div className="mb-6">
         <h1 className="font-display text-3xl font-bold text-brand-green-dark">
           Nuestra tienda

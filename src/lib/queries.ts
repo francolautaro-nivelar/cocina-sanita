@@ -1,8 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import type { Category, Product } from "@/lib/types";
 
 export async function getActiveCategories(): Promise<Category[]> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("categories")
     .select("*")
@@ -19,7 +19,7 @@ export async function getActiveCategories(): Promise<Category[]> {
 export async function getCategoriesWithProducts(): Promise<
   (Category & { products: Product[] })[]
 > {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: categories, error: catError } = await supabase
     .from("categories")
     .select("*")
@@ -48,7 +48,7 @@ export async function getCategoriesWithProducts(): Promise<
 }
 
 export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Nosotros | Cocina Sanita",
-  description: "Conocé la propuesta de Cocina Sanita: comer sano, simple y rico.",
+  title: "Nosotros",
+  description:
+    "Cocina Sanita elabora frutas, verduras y pulpas congeladas en La Plata, libres de gluten y aditivos, listas para tus comidas de todos los días.",
 };
 
 export default function NosotrosPage() {
@@ -38,6 +39,11 @@ export default function NosotrosPage() {
         <p>
           Trabajamos a pedido: elegís lo que necesitás y armás tu pedido desde la web, y
           nosotros te contactamos para coordinar el pago y la entrega.
+        </p>
+        <p>
+          Somos de <strong>La Plata</strong> y coordinamos retiro o envío en la ciudad y
+          alrededores. Si buscás frutas, verduras o pulpas congeladas en La Plata, esta es
+          tu tienda.
         </p>
       </div>
     </div>

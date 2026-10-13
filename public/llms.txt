@@ -1,0 +1,37 @@
+# Cocina Sanita
+
+> Tienda online de frutas, verduras y pulpas de fruta congeladas en La Plata,
+> Buenos Aires, Argentina. Libres de gluten y aditivos, listas para usar en
+> licuados, jugos, postres y cocina de todos los días.
+
+Cocina Sanita vende por pedido online y coordina retiro o envío en la ciudad
+de La Plata y alrededores. No hay pago online: el pedido se arma en la web,
+queda registrado, y el equipo de Cocina Sanita contacta al cliente para
+coordinar el pago y la entrega.
+
+## Categorías de producto
+
+- Frutas congeladas (ananá, arándano, cerezas, durazno, frambuesa, frutilla,
+  mango, mora)
+- Pulpas de fruta congeladas (açaí, frutilla, guayaba, lima, limón, mango,
+  maracuyá, palta)
+- Mix frutales congelados (combinaciones de frutas listas para licuados)
+- Verduras congeladas (acelga, arvejas, brócoli, cebolla, champiñones,
+  chauchas, choclo, espárragos, espinaca, morrón, papas, repollitos de
+  Bruselas)
+- Mix de verduras congeladas (combinaciones listas para sopa, salsa, tarta,
+  wok, tacos, entre otras)
+- Frutos secos, deshidratados y granolas (almendras, avellanas, castañas de
+  cajú, dátiles, maní, nueces, pasas, granolas y mixes)
+
+## Páginas
+
+- Catálogo completo: /productos
+- Nosotros: /nosotros
+- Contacto: /contacto
+
+## Contacto
+
+- WhatsApp: +54 9 221 494-8515
+- Instagram: https://www.instagram.com/cocina.sanita/
+- Facebook: https://www.facebook.com/profile.php?id=61575097626490

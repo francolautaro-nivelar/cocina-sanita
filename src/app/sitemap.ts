@@ -7,12 +7,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = ["", "/productos", "/nosotros", "/contacto"].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: path === "" ? 1 : path === "/productos" ? 0.9 : 0.5,
   }));
 
   const categories = await getActiveCategories();
   const categoryRoutes = categories.map((category) => ({
     url: `${base}/productos?categoria=${category.slug}`,
     lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
   }));
 
   return [...staticRoutes, ...categoryRoutes];
