@@ -26,19 +26,20 @@ export async function submitOrder(input: {
   }
 
   const supabase = await createClient();
-  const { data: order, error } = await supabase
-    .from("orders")
-    .insert({
-      customer_name: input.customerName.trim(),
-      phone: input.phone.trim(),
-      delivery_method: input.deliveryMethod,
-      address_ref: input.addressRef?.trim() || null,
-      notes: input.notes?.trim() || null,
-      items: input.items,
-      total: input.total,
-    })
-    .select("id")
-    .single();
+  // El id se genera acá en vez de leerlo con un .select() después del insert:
+  // por RLS el visitante anónimo puede crear pedidos pero no leerlos, y el
+  // RETURNING del select hace fallar el insert completo (Postgres 42501).
+  const orderId = crypto.randomUUID();
+  const { error } = await supabase.from("orders").insert({
+    id: orderId,
+    customer_name: input.customerName.trim(),
+    phone: input.phone.trim(),
+    delivery_method: input.deliveryMethod,
+    address_ref: input.addressRef?.trim() || null,
+    notes: input.notes?.trim() || null,
+    items: input.items,
+    total: input.total,
+  });
 
   if (error) {
     console.error("submitOrder", error);
@@ -48,10 +49,10 @@ export async function submitOrder(input: {
   // El carrito ya se convirtió en pedido: lo sacamos de "abandonados". No es
   // grave si esto falla (puede no existir el registro todavía).
   if (input.cartSessionId) {
-    await supabase
-      .from("cart_sessions")
-      .update({ status: "ordered", order_id: order.id })
-      .eq("session_id", input.cartSessionId);
+    await supabase.rpc("mark_cart_session_ordered", {
+      p_session_id: input.cartSessionId,
+      p_order_id: orderId,
+    });
   }
 
   // El mail es un aviso secundario: si falla, el pedido ya quedó guardado igual.

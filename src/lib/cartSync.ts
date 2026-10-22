@@ -28,29 +28,27 @@ export function syncCartSession(patch: CartSessionPatch) {
     const sessionId = getCartSessionId();
     if (!sessionId) return;
 
-    const payload: Record<string, unknown> = {
-      session_id: sessionId,
-      updated_at: new Date().toISOString(),
-    };
-    if (patch.items) {
-      payload.items = patch.items.map((i) => ({
-        product_id: i.productId,
-        name: i.name,
-        unit_label: i.unitLabel,
-        price: i.price,
-        quantity: i.quantity,
-      }));
-    }
-    if (patch.total !== undefined) payload.total = patch.total;
-    if (patch.customerName !== undefined) payload.customer_name = patch.customerName.trim() || null;
-    if (patch.customerPhone !== undefined) payload.customer_phone = patch.customerPhone.trim() || null;
-    if (patch.deliveryMethod !== undefined) payload.delivery_method = patch.deliveryMethod;
-    if (patch.addressRef !== undefined) payload.address_ref = patch.addressRef.trim() || null;
-
+    // Va por una función de la base en vez de un upsert directo: con RLS el
+    // visitante anónimo no puede leer cart_sessions, y sin lectura Postgres no
+    // resuelve el ON CONFLICT. Cada campo en null significa "dejá el que ya está".
     const supabase = createClient();
     supabase
-      .from("cart_sessions")
-      .upsert(payload, { onConflict: "session_id" })
+      .rpc("upsert_cart_session", {
+        p_session_id: sessionId,
+        p_items:
+          patch.items?.map((i) => ({
+            product_id: i.productId,
+            name: i.name,
+            unit_label: i.unitLabel,
+            price: i.price,
+            quantity: i.quantity,
+          })) ?? null,
+        p_total: patch.total ?? null,
+        p_customer_name: patch.customerName?.trim() || null,
+        p_customer_phone: patch.customerPhone?.trim() || null,
+        p_delivery_method: patch.deliveryMethod ?? null,
+        p_address_ref: patch.addressRef?.trim() || null,
+      })
       .then(() => {});
   }, 800);
 }
